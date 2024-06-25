@@ -1,4 +1,94 @@
-# Machine-Generated JSONL File
+# Self-Instruct Data Generation Project
+
+This project aims to generate a large dataset of instructions using the Self-Instruct methodology with the Llama-3 model. The primary goal is to bootstrap a small set of manually-written instructions into a comprehensive dataset through iterative generation, filtering, and refinement processes.
+
+## Project Files
+
+### Python Scripts
+
+#### bootstrap_instructions.py
+
+This script generates new instructions using a language model (Llama-3). It takes a set of seed instructions and produces a specified number of new instructions.
+
+**Key Functions:**
+- `encode_prompt()`: Encodes multiple prompt instructions into a single string.
+- `sample_machine_instructions()`: Samples machine-generated instructions.
+- `post_process_llama3_response()`: Processes the responses from Llama-3.
+- `parse_args()`: Parses command-line arguments.
+
+**Main execution:** Loads seed instructions, generates new instructions, and saves them to a JSONL file.
+
+#### gpt3_api.py
+
+This script contains functions to interact with the GPT-3 API. Although adapted for GPT-3, it has been modified to work with Llama-3 in this project.
+
+**Key Function:**
+- `make_requests()`: Sends requests to the Llama-3 API and retrieves responses.
+
+#### prepare_for_finetuning.py
+
+This script prepares the generated instructions for fine-tuning a language model. It processes and filters the instances and saves the cleaned data.
+
+**Key Functions:**
+- `encode_instance()`: Encodes instruction, input, and output into a specific format.
+- `filter_duplicate_instances()`: Filters out duplicate instances.
+- `filter_invalid_instances()`: Filters out invalid instances.
+- `parse_instances_for_generation_task()`: Parses instances for generation tasks.
+- `parse_instances_for_classification_task()`: Parses instances for classification tasks.
+
+**Main execution:** Loads generated tasks, processes them, and saves the cleaned instances for fine-tuning.
+
+### Shell Scripts
+
+#### generate_instructions.sh
+
+A shell script to run `bootstrap_instructions.py` with specified parameters.
+
+**Usage:**
+```sh
+bash generate_instructions.sh
+```
+prepare_for_finetuning.sh
+A shell script to run prepare_for_finetuning.py with specified parameters.
+
+**Usage**
+
+```sh
+bash prepare_for_finetuning.sh
+```
+## Setup and Usage
+
+1. **Get a Groq API Key**
+   - Sign up at Groq to get a free API key.
+
+2. **Create a .env File**
+   - Create a `.env` file in the root directory of the project and add your Groq API key:
+     ```makefile
+     GROQ_API_KEY=your_api_key_here
+     ```
+
+3. **Install Dependencies**
+   - Make sure you have Python installed. Install the required Python packages using:
+     ```sh
+     pip install -r requirements.txt
+     ```
+
+4. **Prepare Seed Tasks**
+   - Ensure you have your seed tasks ready in the `data/seed_tasks.jsonl` file. This file contains the initial set of instructions to bootstrap from.
+
+5. **Generate Instructions**
+   - Run the `generate_instructions.sh` script to generate new instructions:
+     ```sh
+     bash generate_instructions.sh
+     ```
+
+6. **Prepare Data for Fine-Tuning**
+   - Run the `prepare_for_finetuning.sh` script to prepare the generated instructions for fine-tuning:
+     ```sh
+     bash prepare_for_finetuning.sh
+     ```
+
+# Understanding the Output i.e. Machine-Generated JSONL File
 
 This README provides an overview and explanation of the machine-generated JSONL file produced by the script.
 
