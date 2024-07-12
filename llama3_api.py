@@ -14,7 +14,7 @@ groq_api_key = os.getenv("GROQ_API_KEY")
 
 client = Groq(api_key=groq_api_key)
 
-def make_requests(prompts, retries=3):
+def make_requests(prompts, stop_sequences, retries=3):
     response = None
     retry_cnt = 0
     backoff_time = 30
@@ -30,6 +30,14 @@ def make_requests(prompts, retries=3):
                     model="llama3-8b-8192"
                 )
                 response = chat_completion.choices[0].message.content.strip()
+                for stop_seq in stop_sequences:
+                    if stop_seq in response:
+                        print("\n\nOriginal response")
+                        print(response)
+                        print("\n\nFound stop sequence ", stop_seq)
+                        print(response.split(stop_seq))
+                        response = response.split(stop_seq)[0]
+                        break
                 results.append({
                     "prompt": prompt,
                     "response": {"choices": [{"text": response}]},
